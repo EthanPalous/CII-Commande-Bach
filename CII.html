@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> CII </title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="Documents/CSSCII.css" />
+		<script type="text/javascript" src="Documents/ScenarioCII.js"></script>
+		<script type="text/javascript">
+			var niveau = niveau_debut;
+			var cas = 0;
+			var liste_utilisateurs = [utilisateurs_lvl0, utilisateurs_lvl1, utilisateurs_lvl2, utilisateurs_lvl3, utilisateurs_lvl4, utilisateurs_lvl5, utilisateurs_lvl6, utilisateurs_lvl7];
+			var utilisateur_courant;
+			var numero_utilisateur_courant;
+			var liste_logins = [login_lvl0, login_lvl1, login_lvl2, login_lvl3, login_lvl4, login_lvl5, login_lvl6, login_lvl7];
+			var liste_passes = [valeurs_attendues_lvl0, valeurs_attendues_lvl1, valeurs_attendues_lvl2, valeurs_attendues_lvl3, valeurs_attendues_lvl4, valeurs_attendues_lvl5, valeurs_attendues_lvl6, valeurs_attendues_lvl7];
+			var liste_messages_intro = [message_intro_lvl0, message_intro_lvl1, message_intro_lvl2, message_intro_lvl3, message_intro_lvl4, message_intro_lvl5, message_intro_lvl6, message_intro_lvl7, message_intro_lvl8];
+			var commandes = [commandes_lvl0, commandes_lvl1, commandes_lvl2, commandes_lvl3, commandes_lvl4, commandes_lvl5, commandes_lvl6, commandes_lvl7];
+			var effets_commandes = [effets_commandes_lvl0, effets_commandes_lvl1, effets_commandes_lvl2, effets_commandes_lvl3, effets_commandes_lvl4, effets_commandes_lvl5, effets_commandes_lvl6, effets_commandes_lvl7];
+			var erreurs = [erreurs_lvl0, erreurs_lvl1, erreurs_lvl2, erreurs_lvl3, erreurs_lvl4, erreurs_lvl5, erreurs_lvl6, erreurs_lvl7];
+			var changements_utilisateurs = [changements_utilisateurs_lvl0, changements_utilisateurs_lvl1, changements_utilisateurs_lvl2, changements_utilisateurs_lvl3, changements_utilisateurs_lvl4, changements_utilisateurs_lvl5, changements_utilisateurs_lvl6, changements_utilisateurs_lvl7];
+			var derniere_saisie;
+			var indice_rappel_derniere_saisie;
+			
+			window.onload = invite_commande;
+			
+			function invite_commande() {
+				focus('in_principal');
+                var ldv = document.getElementById('in_principal');              
+                ldv.onkeydown = touche;
+            }
+			
+			function touche(event) {
+                if (event.keyCode == 13) {
+					afficher_saisie();
+                }
+				else if ((event.keyCode == 38) && (indice_rappel_derniere_saisie < derniere_saisie.length)) {
+					indice_rappel_derniere_saisie += 1;
+					document.getElementById('in_principal').value = derniere_saisie[derniere_saisie.length-indice_rappel_derniere_saisie];	
+				}
+				else if ((event.keyCode == 40) && (indice_rappel_derniere_saisie > 1)) {
+					indice_rappel_derniere_saisie -= 1;
+					document.getElementById('in_principal').value = derniere_saisie[derniere_saisie.length-indice_rappel_derniere_saisie];	
+				}
+            }
+			
+			var focus = function(champ)
+			{
+				document.getElementById(champ).focus();
+			}
+			
+			var construire_invite = function() 
+			{
+				var div_in = document.createElement('div');
+				div_in.id = 'in';
+				document.body.appendChild(div_in);
+				document.getElementById('in').innerHTML += utilisateur_courant+'<input type="text" id="in_principal" tabindex="0" size="40" autocomplete="on">';
+				document.getElementById('in_principal').value = "";
+				indice_rappel_derniere_saisie = 1;
+				derniere_saisie.push("");
+			}
+             
+            var afficher_saisie = function (){
+                var saisie = document.getElementById('in_principal').value;
+				document.getElementById('out').innerHTML += utilisateur_courant+ saisie + '</br>';
+				derniere_saisie.pop();
+				derniere_saisie.push(saisie);
+				indice_rappel_derniere_saisie = 0;
+				var tableau_utilisateurs = liste_utilisateurs[niveau];
+				var tableau_commandes = commandes[niveau][numero_utilisateur_courant][cas];
+				var tableau_effets = effets_commandes[niveau][numero_utilisateur_courant][cas];
+				var tableau_changements_utilisateurs = changements_utilisateurs[niveau][numero_utilisateur_courant][cas];
+				var i;
+				var indice = -1;
+				for (i = 0 ; i < tableau_commandes.length ; i++) {
+					if (position_dans_tableau(saisie, tableau_commandes[i]) > -1) {
+						indice = i;
+					}
+				}
+				if ((saisie != "") && (indice == -1)) {
+					var div_in = document.getElementById('in');
+					document.body.removeChild(div_in);
+					var ls = saisie.indexOf('ls ');
+					var cat = saisie.indexOf('cat ');
+					var chmod = saisie.indexOf('chmod ');
+					var cd = saisie.indexOf('cd ');
+					var mkdir = saisie.indexOf('mkdir ');
+					var mv = saisie.indexOf('mv ');
+					var ssh = saisie.indexOf('ssh ');
+					var sudo = saisie.indexOf('sudo ');
+					if (sudo == 0) {
+						var reste = saisie.slice(5, saisie.length);
+						document.getElementById('out').innerHTML += "<erreur>Vous n'êtes pas autorisé à utiliser cette commande administrateur</erreur></br>";
+					}
+					else if ((niveau > 0) && (ls == 0)) {
+						var reste = saisie.slice(3, saisie.length);
+						document.getElementById('out').innerHTML += "<erreur>options ou dossier incorrect(s)</erreur></br>";
+					}
+					else if ((niveau > 0) && (cat == 0)) {
+						var reste = saisie.slice(4, saisie.length);
+						document.getElementById('out').innerHTML += "<erreur>Fichier</erreur> "+reste+" <erreur>introuvable</erreur></br>";
+					}
+					else if ((niveau > 2) && (chmod == 0)) {
+						var reste = saisie.slice(6, saisie.length);
+						document.getElementById('out').innerHTML += "<erreur>options ou fichier incorrect(s)</erreur></br>";
+					}
+					else if ((niveau > 3) && (cd == 0)) {
+						var reste = saisie.slice(3, saisie.length);
+						document.getElementById('out').innerHTML += "<erreur>Le dossier</erreur> "+reste+" <erreur>est introuvable</erreur></br>";
+					}
+					else if ((niveau > 4) && (mkdir == 0)) {
+						var reste = saisie.slice(6, saisie.length);
+						document.getElementById('out').innerHTML += "<erreur>Vous n'êtes pas autorisé à créer ce dossier</erreur></br>";
+					}
+					else if ((niveau > 4) && (mv == 0)) {
+						var reste = saisie.slice(3, saisie.length);
+						document.getElementById('out').innerHTML += "<erreur>Vous n'êtes pas autorisé à effectuer ce déplacement</erreur></br>";
+					}
+					else if ((niveau > 6) && (ssh == 0)) {
+						var reste = saisie.slice(4, saisie.length);
+						document.getElementById('out').innerHTML += "<erreur>L'ordinateur</erreur> "+reste+" <erreur>est introuvable</erreur></br>";
+					}
+					else {
+						document.getElementById('out').innerHTML += "<erreur>Commande </erreur>"+saisie+" <erreur>introuvable</erreur></br>Saisissez la commande <special>help</special> pour obtenir la liste des commandes autorisées</br>";
+					}
+					construire_invite();
+					invite_commande();
+				}
+				if (indice > -1) {
+					var div_in = document.getElementById('in');
+					document.body.removeChild(div_in);
+					var question = -1;
+					if (tableau_effets[indice].length > 0) {
+						question = (tableau_effets[indice][0]).indexOf("?</saisie>");
+					}
+					if (question == -1) {
+						if (tableau_effets[indice].length > 0) {
+							for (i = 0 ; i < (tableau_effets[indice]).length ; i++) {
+								document.getElementById('out').innerHTML += tableau_effets[indice][i]+'</br>';
+							}
+						}						
+						cas = fonction_cas(niveau, cas, saisie, numero_utilisateur_courant);
+						if (((saisie == commandes_lvl6_user0_cas0[9][0]) || (saisie == commandes_lvl6_user1_cas0[13][0])) && ((niveau == 6) || (niveau == 7))) {
+							ouvrir_birthday_jpg();
+						}
+						if (((saisie == commandes_lvl7_user0_cas0[14][0]) || (saisie == commandes_lvl7_user1_cas0[19][0])) && (niveau == 7)) {
+							ouvrir_level1_jpg();
+						}
+						var erreur_reponse = -1;
+						if (tableau_effets[indice].length > 0) {
+							erreur_reponse = (tableau_effets[indice][0]).indexOf("</erreur>");
+						}
+						var numero_utilisateur = tableau_changements_utilisateurs[indice];
+						if ((erreur_reponse == -1) && (numero_utilisateur > -1)) {
+							var reste = saisie.slice(4, saisie.length);
+							utilisateur_courant = tableau_utilisateurs[numero_utilisateur];
+							numero_utilisateur_courant = numero_utilisateur;
+						}
+						if (fin_chapitre(niveau, saisie, liste_logins[niveau])) {
+							nouveau_chapitre()
+						}
+						else {
+							construire_invite();
+							invite_commande();
+						}
+					}
+					else {
+						document.getElementById("out").innerHTML += tableau_effets[indice][0];
+						var input_bis = document.createElement("input");
+						input_bis.id = "in_bis";
+						input_bis.type = "text";
+						input_bis.tabindex = "0";
+						input_bis.autocomplete = "on";
+						document.getElementById("out").appendChild(input_bis);
+						focus("in_bis");
+						var ldv_bis = document.getElementById("in_bis");              
+						ldv_bis.onkeydown = touche_entree_bis;             
+						function touche_entree_bis() {
+							if (event.keyCode == 13) {
+								var saisie_bis = document.getElementById("in_bis").value;
+								if ((saisie == liste_logins[niveau]) && (saisie_bis == liste_passes[niveau][numero_utilisateur_courant][cas][indice])) {
+									nouveau_chapitre()
+								}
+								else {
+									input_bis = document.getElementById("in_bis");
+									document.getElementById("out").removeChild(input_bis);
+									document.getElementById("out").innerHTML += saisie_bis;
+									if (saisie_bis != liste_passes[niveau][numero_utilisateur_courant][cas][indice]) {
+										document.getElementById("out").innerHTML += "</br>"+erreurs[niveau][numero_utilisateur_courant][cas][indice]+"</br>";
+									}
+									else {
+										var ssh = saisie.indexOf("ssh ");
+										if (ssh == 0) {
+											var reste = saisie.slice(4, saisie.length);
+											utilisateur_courant = "<user>"+reste+"@CII</user>:<dossier>/</dossier>$ ";
+											numero_utilisateur_courant = position_dans_tableau(utilisateur_courant, liste_utilisateurs[niveau]);
+											console.log(numero_utilisateur_courant);
+										}										
+										document.getElementById("out").innerHTML += "</br>";
+									}									
+									construire_invite();
+									invite_commande();
+								}
+							}
+						}
+					}
+				}
+            }
+			
+			function init_chapitre(lvl) {
+				var intro_chapitre = document.createElement('div');
+				intro_chapitre.id = 'IntroChapitre';
+				document.body.appendChild(intro_chapitre);
+				intro_chapitre.innerHTML += liste_messages_intro[lvl]+'</br>';
+				var div_out = document.createElement('div');
+				div_out.id = 'out';
+				document.body.appendChild(div_out);
+				utilisateur_courant = liste_utilisateurs[lvl][0];
+				numero_utilisateur_courant = 0;
+				derniere_saisie = [];
+				indice_rappel_derniere_saisie = 0;
+				construire_invite();
+			}
+			
+			function nouveau_chapitre() {
+				var intro_chapitre = document.getElementById('IntroChapitre');
+				document.body.removeChild(intro_chapitre);
+				var div_out = document.getElementById('out');
+				document.body.removeChild(div_out);
+				niveau += 1;
+				init_chapitre(niveau);
+				invite_commande();
+				cas = 0;
+			}
+			
+			function position_dans_tableau(element, tableau) {
+				var i;
+				for (i = 0 ; i < tableau.length ; i++) {
+					if (tableau[i] == element) {
+						return i;
+					}
+				}
+				return -1;
+			}
+			
+			function ouvrir_birthday_jpg() {
+				window.open('Documents/Birthday.html','','menubar=no, scrollbars=no, location=no, resizable=no, top=100, left=900, width=473, height=354');
+			}
+			
+			function ouvrir_level1_jpg() {
+				window.open('Documents/Level1.html','','menubar=no, scrollbars=no, location=no, resizable=no, top=100, left=900, width=499, height=334');
+			}
+			
+        </script>
+	</head>
+	
+	<body>
+		<script>
+			init_chapitre(niveau);
+		</script>
+	</body>
+</html>

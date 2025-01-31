@@ -1,0 +1,69 @@
+body
+{
+	position:sticky;
+ 	#overflow:hidden;
+	margin:30px;
+	left:5px;
+	right:5px;
+	top:5px;
+	bottom:5px;
+	background-color:rgb(0,0,0);
+	color:rgb(190,190,190);
+	font-family:monospace;
+	font-size:18px;
+}
+
+nom
+{
+	color:rgb(200,0,200);
+}
+
+user
+{
+	color:rgb(0,255,0);
+}
+
+correct
+{
+	color:rgb(70,200,50);
+}
+
+special
+{
+	color:rgb(255,180,0);
+}
+
+erreur
+{
+	color:rgb(200,0,0);
+}
+
+saisie
+{
+	color:rgb(150,150,150);
+}
+
+fichier
+{
+	color:rgb(190,190,190);
+}
+
+dossier
+{
+	color:rgb(0,0,255);
+}
+
+niveau
+{
+	color:rgb(200,200,0);
+}
+
+input
+{
+	background-color:rgb(0,0,0);
+	color:rgb(190,190,190);
+	border-style:none;
+	outline:none;
+	font-family:monospace;
+	font-size:18px;
+}

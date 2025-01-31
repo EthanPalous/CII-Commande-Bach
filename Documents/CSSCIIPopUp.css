@@ -1,0 +1,15 @@
+body
+{
+	position:fixed;
+	padding:10px;
+	background-color:rgb(255,255,255);
+	color:rgb(0,0,0);
+}
+
+.noiretblanc{
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+}
