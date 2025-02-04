@@ -4,25 +4,13 @@ function encodeLevel(level) {
 
 function saveProgress(level) {
     let saveCode = encodeLevel(level);
-    localStorage.setItem("gameSave", saveCode); // Store hex code in local storage
+    localStorage.setItem(saveCode); // Store hex code in local storage
     console.log(`Progress saved: ${saveCode}`);
 }
 
-function decodeLevel(hexCode) {
-    let level = parseInt(hexCode, 16); // Convert hex back to number
+function decodeLevel(saveCode) {
+    let level = parseInt(saveCode, 16); // Convert hex back to number
     return isNaN(level) ? null : level; // Validate if the code is valid
-}
-
-function loadLevelFromCode() {
-    let hexCode = prompt("Enter your save code:");
-    let level = decodeLevel(hexCode);
-    
-    if (level !== null) {
-        alert(`Loading Level ${level}...`);
-        startLevel(level);
-    } else {
-        alert("Invalid code. Try again.");
-    }
 }
 
 function loadProgress() {
@@ -37,4 +25,17 @@ function loadProgress() {
     }
     console.log("No save found. Starting from Level 1.");
     startLevel(1);
+}
+
+function levelUp() {
+    let currentLevel = decodeLevel(localStorage.getItem(saveCode)) || 1;
+    let nextLevel = currentLevel + 1;
+    
+    saveProgress(nextLevel); // Save progress immediately
+    startLevel(nextLevel);   // Load the new level
+}
+
+function reachCheckpoint(level) {
+    saveProgress(level);
+    console.log(`Checkpoint reached: Level ${level} saved.`);
 }

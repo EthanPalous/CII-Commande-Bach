@@ -1,4 +1,6 @@
-loadProgress();
+{
+	loadProgress();
+}
 
 Nom_compagnie = "<nom>CII</nom>";
 niveau_debut = 0;
@@ -151,8 +153,8 @@ var construire_listes_ls = function (dossier) {
 
 //=========== lvl0 ===========
 {
-	encodeLevel
-	saveProgress
+	console.log(encodeLevel(0));
+	reachCheckpoint()
 }
 
 utilisateurs_lvl0 = ["<user>user@CII</user>:<dossier>/</dossier>$ "];
@@ -184,8 +186,8 @@ changements_utilisateurs_lvl0 = [changements_utilisateurs_lvl0_user0];
 
 //=========== lvl1 ===========
 {
-	encodeLevel
-	saveProgress
+	console.log(encodeLevel(0));
+	reachCheckpoint()
 }
 utilisateurs_lvl1 = ["<user>user@CII</user>:<dossier>/</dossier>$ "];
 login_lvl1 = "login";
@@ -246,8 +248,8 @@ changements_utilisateurs_lvl1 = [changements_utilisateurs_lvl1_user0];
 
 //=========== lvl2 ===========
 {
-	encodeLevel
-	saveProgress
+	console.log(encodeLevel(0));
+	reachCheckpoint()
 }
 utilisateurs_lvl2 = ["<user>user@CII</user>:<dossier>/</dossier>$ "];
 login_lvl2 = "login";
@@ -315,8 +317,8 @@ changements_utilisateurs_lvl2 = [changements_utilisateurs_lvl2_user0];
 
 //=========== lvl3 ===========
 {
-	encodeLevel
-	saveProgress
+	console.log(encodeLevel(0));
+	reachCheckpoint()
 }
 utilisateurs_lvl3 = ["<user>user@CII</user>:<dossier>/</dossier>$ "];
 login_lvl3 = "login";
@@ -396,8 +398,8 @@ changements_utilisateurs_lvl3 = [changements_utilisateurs_lvl3_user0];
 
 //=========== lvl4 ===========
 {
-	encodeLevel
-	saveProgress
+	console.log(encodeLevel(0));
+	reachCheckpoint()
 }
 utilisateurs_lvl4 = ["<user>user@CII</user>:<dossier>/</dossier>$ ","<user>user@CII</user>:<dossier>/password</dossier>$ "];
 login_lvl4 = "login";
@@ -492,8 +494,8 @@ changements_utilisateurs_lvl4 = [changements_utilisateurs_lvl4_user0, changement
 
 //=========== lvl5 ===========
 {
-	encodeLevel
-	saveProgress
+	console.log(encodeLevel(0));
+	reachCheckpoint()
 }
 utilisateurs_lvl5 = ["<user>user@CII</user>:<dossier>/</dossier>$ ","<user>user@CII</user>:<dossier>/decrypte</dossier>$ "];
 login_lvl5 = "login";
@@ -628,8 +630,8 @@ changements_utilisateurs_lvl5 = [changements_utilisateurs_lvl5_user0, changement
 
 //=========== lvl6 ===========
 {
-	encodeLevel
-	saveProgress
+	console.log(encodeLevel(0));
+	reachCheckpoint()
 }
 utilisateurs_lvl6 = ["<user>"+nomprenom1+"@CII</user>:<dossier>/</dossier>$ ","<user>"+nomprenom1+"@CII</user>:<dossier>/mail</dossier>$ "];
 login_lvl6 = "unlock";
@@ -748,8 +750,8 @@ changements_utilisateurs_lvl6 = [changements_utilisateurs_lvl6_user0, changement
 
 //=========== lvl7 ===========
 {
-	encodeLevel
-	saveProgress
+	console.log(encodeLevel(0));
+	reachCheckpoint()
 }
 utilisateurs_lvl7 = ["<user>"+nomprenom1+"@CII</user>:<dossier>/</dossier>$ ","<user>"+nomprenom1+"@CII</user>:<dossier>/mail</dossier>$ ","<user>"+nomprenom2+"@CII</user>:<dossier>/</dossier>$ ","<user>"+nomprenom2+"@CII</user>:<dossier>/mail</dossier>$ ","<user>"+nomprenom3+"@CII</user>:<dossier>/</dossier>$ ","<user>"+nomprenom3+"@CII</user>:<dossier>/mail</dossier>$ ","<user>"+nomprenom4+"@CII</user>:<dossier>/</dossier>$ "];
 login_lvl7 = "ssh "+nomprenom4;
