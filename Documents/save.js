@@ -35,7 +35,7 @@ function levelUp() {
     startLevel(nextLevel);   // Load the new level
 }
 
-function reachCheckpoint(level) {
+function levelUp();(level) {
     saveProgress(level);
     console.log(`Checkpoint reached: Level ${level} saved.`);
 }
